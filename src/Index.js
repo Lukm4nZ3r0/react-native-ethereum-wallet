@@ -45,7 +45,7 @@ const bottomTabNavigator = createBottomTabNavigator({
         backgroundColor:'white'
     },
     showLabel:false
-  },
+  }
 })
 
 const Index = createStackNavigator({
