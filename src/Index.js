@@ -1,31 +1,62 @@
 import React, {Component} from 'react'
-import {View,Text,TextInput} from 'react-native'
-//redux
-import { connect } from 'react-redux';
-import { updateName } from './redux/actions/user';
+import {View,Text,TextInput,ImageBackground} from 'react-native'
+// Assets, History, Market Price, Account
+import { createAppContainer, createStackNavigator, createBottomTabNavigator } from 'react-navigation'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import Assets from './components/Assets'
+import History from './components/History'
+import Market from './components/Market'
+import Account from './components/Account'
 
-class Index extends Component{
-  state = {
-    name: this.props.user.name || '',
-  }
+// Assets, History, Market Price, Account
 
-  handleChange = (name) =>{
-    this.props.dispatch(updateName(name))
-  }
+const bottomTabNavigator = createBottomTabNavigator({
+  Assets:{screen:Assets},
+  History:{screen:History},
+  Market:{screen:Market},
+  Account:{screen:Account},
+},{
+  defaultNavigationOptions: ({ navigation }) => ({
+      tabBarIcon: ({ focused, horizontal, tintColor }) => {
+          const { routeName } = navigation.state;
+          let IconComponent = FontAwesome;
+          let iconName;
+          if (routeName === 'Assets'){
+            iconName = 'money';
+          }
+          else if(routeName === 'History'){
+            iconName = 'history';
+          }
+          else if(routeName === 'Market'){
+            iconName = 'signal';
+          }
+          else if(routeName === 'Account'){
+            iconName = 'id-card';
+          }
 
-  render(){
-    return(
-      <View>
-        <Text>Hi</Text>
-        <TextInput onChangeText={this.handleChange} placeholder="here"/>
-        <Text>{this.props.user.name}</Text>
-      </View>
-    )
-  }
-}
+          // You can return any component that you like here!
+          return <FontAwesome name={iconName} size={25} color={tintColor} />;
+      }
+  }),
+  tabBarOptions: {
+    activeTintColor: 'black',
+    inactiveTintColor: 'grey',
+    style:{
+        backgroundColor:'white'
+    },
+    showLabel:false
+  },
+})
 
-const mapStateToProps = state => ({
-  user: state.user,
-});
+const Index = createStackNavigator({
+  Assets:{
+    screen:bottomTabNavigator,
+    navigationOptions: () => ({
+      header:null,
+    })
+  },
+},{
+  initialRouteName: 'Assets'
+})
 
-export default connect(mapStateToProps)(Index)
+export default createAppContainer(Index)
