@@ -7,6 +7,8 @@ import Assets from './components/Assets'
 import History from './components/History'
 import Market from './components/Market'
 import Account from './components/Account'
+//ComponentChild
+import Login from './component_units/Login'
 
 // Assets, History, Market Price, Account
 
@@ -51,6 +53,12 @@ const bottomTabNavigator = createBottomTabNavigator({
 const Index = createStackNavigator({
   Assets:{
     screen:bottomTabNavigator,
+    navigationOptions: () => ({
+      header:null,
+    })
+  },
+  Login:{
+    screen:Login,
     navigationOptions: () => ({
       header:null,
     })
