@@ -1,5 +1,4 @@
-const URL = 'https://api.etherscan.io/api?'
-const ETHERSCAN_APIKEY = 'H7HQ81XQ1IG2SMD7MEGUST1AQSUAYMIA21'
+import Config from "react-native-config";
 
-
-export default URL
+const ETHERSCAN_APIKEY = Config.YOUR_ETHERSCAN_API_KEY
+export const URL = `https://api.etherscan.io/api?apikey=${ETHERSCAN_APIKEY}&`

@@ -1,16 +1,26 @@
-import axios from 'axios'
-import URL from '../../../URL'
-
 export const updateName = (name) => {
     return{
         type: 'UPDATE_NAME',
         name
     }
 }
-export const addPrimaryAddress = (address) =>{
+export const updatePrice = (price) =>{
+    return{
+        type: 'UPDATE_PRICE',
+        price
+    }
+}
+export const updatePercentagePrice = (price) =>{
+    return{
+        type: 'UPDATE_PERCENTAGE_PRICE',
+        price
+    }
+}
+export const addPrimaryAddress = (address,ethAmount) =>{
     return{
         type:'ADD_PRIMARY_ADDRESS',
-        address
+        address,
+        ethAmount
     }
 }
 export const addAddress = (address) => {

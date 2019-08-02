@@ -3,7 +3,7 @@ import {View,Text,TextInput,ImageBackground, FlatList,TouchableOpacity, Image} f
 import LinearGradient from 'react-native-linear-gradient'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
-const AssetsHeaderLoginFalse = ({navigation}) =>{
+const AssetsHeaderLoginFalse = ({navigation,loginEvent}) =>{
     return(
         <ImageBackground style={{flex:1, resizeMode:'contain', alignItems:'center', justifyContent:'center'}} source={require('../../assets/image/header.png')}>
             <View style={{width:'90%'}}>
@@ -14,7 +14,7 @@ const AssetsHeaderLoginFalse = ({navigation}) =>{
                 <Text style={{color:'white', fontSize:18}}>Login Sekarang</Text>
             </View>
             <View style={{justifyContent:'center', width:'90%', margin:20}}>
-                <TouchableOpacity style={{width:'40%', borderRadius:5}} onPress={()=>navigation.navigate('Login')}>
+                <TouchableOpacity style={{width:'40%', borderRadius:5}} onPress={()=>navigation.navigate('Login', {loginEvent:loginEvent})}>
                 <LinearGradient colors={['black', 'grey']} start={{ x: 0, y: 0 }} end={{ x: 3, y: 3 }} style={{alignItems:'center', justifyContent:'center',borderRadius:5, flexDirection:'row'}} >
                     <FontAwesome name="sign-in" style={{color:'white', fontSize:20, fontWeight:'bold', margin:10}} />
                     <Text style={{color:'white'}}>Sign In</Text>
