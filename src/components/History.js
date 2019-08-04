@@ -23,11 +23,11 @@ class History extends Component{
                     let newDate = new Date(Number(item.timeStamp)).toString().split(' ')
                     let timeStamp = `${newDate[0]}, ${newDate[2]}-${newDate[1]} ${newDate[3]}`
                     return (
-                    <TouchableOpacity style={{padding:10, margin:5, borderRadius:10, backgroundColor:'white', elevation:5, flexDirection:'row'}}>
+                    <TouchableOpacity onPress={()=>this.props.navigation.navigate('HistoryDetails',{item:item})} style={{padding:10, margin:5, borderRadius:10, backgroundColor:'white', elevation:5, flexDirection:'row'}}>
                         <Image style={{width:50, height:50, resizeMode:'contain'}} source={{uri:'https://i1.wp.com/www.vectorico.com/wp-content/uploads/2018/09/ethereum-icon.png?resize=210%2C300'}}/>
                         <View style={{flex:3}}>
-                        <Text style={{color:'green'}}>Date:</Text>
-                        <Text numberOfLines={1}>{timeStamp}</Text>
+                        {this.props.user.primaryAddress.toLowerCase() === item.to.toLowerCase()? <Text style={{color:'green'}}>RECEIVED</Text>:<Text style={{color:'red'}}>SEND</Text>}
+                        <Text numberOfLines={1}>Date: {timeStamp}</Text>
                         <View style={{flexDirection:'row'}}>
                             <Text style={{color:'red'}}>TxHash: </Text>
                             <Text numberOfLines={1}>{item.hash}</Text>
