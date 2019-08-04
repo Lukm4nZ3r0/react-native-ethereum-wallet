@@ -4,25 +4,20 @@ import LinearGradient from 'react-native-linear-gradient'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 //redux
 import { connect } from 'react-redux';
-import { logout,updatePrice,updatePercentagePrice } from '../redux/actions/user';
-import Config from "react-native-config";
+import { logout,updatePrice,updatePercentagePrice,updateHistoryTransaction,deleteAddress,deleteAddressWhere } from '../redux/actions/user';
+import {URL} from '../../URL'
 import axios from 'axios'
 //ChildComponent
 import AssetsHeader from '../component_units/AssetsHeader'
 import AssetsBody from '../component_units/AssetsBody'
 import AssetsHeaderLoginFalse from '../component_units/AssetsHeaderLoginFalse'
-import {URL} from '../../URL'
 
 class Assets extends Component{
   constructor(props){
     super(props)
     this.state = {
       isLogged: props.user.isLogin,
-      flatListData:[
-        {id:0, ethAddress:'0xddBd2B932c763bA5b1b7AE3B362eac3e8d40121A', total:'0.02'},
-        {id:1, ethAddress:'0xddBd2B932c763bA5b1b7AE3B362eac3e8d40121A', total:'0.02'},
-        {id:2, ethAddress:'0xddBd2B932c763bA5b1b7AE3B362eac3e8d40121A', total:'0.02'},
-      ],
+      flatListData:this.props.user.otherAddress!==undefined?this.props.user.otherAddress:[],
       ethPrice:{
         ethbtc:0, 
         ethbtc_stamp:0, 
@@ -47,12 +42,21 @@ class Assets extends Component{
       this.setState({isLogged:false})
     }
 
-    this.state.isLogged && this.getPriceData()
+    if(this.state.isLogged){
+      this.getPriceData()
+      this.getTransactionHistory()
+    }
   }
 
   componentWillUnmount = () => {
     clearInterval(this.setPrice)
   };
+
+  getTransactionHistory = () =>{
+    axios.get(`${URL}module=account&action=txlist&address=${this.props.user.primaryAddress}&startblock=0&endblock=99999999&sort=asc`).then((response)=>{
+      this.props.dispatch(updateHistoryTransaction(response.data.result))
+    })
+  }
 
   getPriceData = () =>{
     axios.get(`${URL}module=stats&action=ethprice`).then((response)=>{
@@ -62,7 +66,7 @@ class Assets extends Component{
 
     this.setPrice = setInterval(()=>{
       this.getPrice()
-    },5000)
+    },10000)
   }
 
   getPrice = () =>{
@@ -78,14 +82,42 @@ class Assets extends Component{
         percentage!==0&&this.props.dispatch(updatePercentagePrice(percentage))
       })
     })
-    console.warn(this.props.user.percentagePrice)
+    // console.warn(this.props.user.percentagePrice)
     // console.warn('Now: '+this.state.currentPrice+', Last'+this.state.ethPrice.ethusd+', Percentage:'+this.state.percentage)
   }
   
+  addNewAddress = (address) =>{
+    this.setState({
+      flatListData:[...this.state.flatListData, {ethAddress:address}]
+    })
+    console.warn(this.props.user.otherAddress)
+  }
+
+  deleteAddress = (address) =>{
+    let {flatListData} = this.state
+    let {otherAddress} = this.props.user
+    if(flatListData.length>1){
+      for(let i = 0 ; i<flatListData.length ; i++){
+        if(flatListData[i].ethAddress === address){
+          flatListData.splice(i,1)
+          this.props.dispatch(deleteAddressWhere(address))
+        }
+      }
+    }
+    else{
+      this.props.dispatch(deleteAddress())
+      flatListData=[]
+    }
+    this.setState({
+      flatListData:flatListData
+    })
+    console.warn(this.props.user.otherAddress)
+  }
 
   loginEvent = () =>{
     this.setState({isLogged:true})
     this.getPriceData()
+    this.getTransactionHistory()
   }
 
   logoutHandler = () =>{
@@ -99,8 +131,8 @@ class Assets extends Component{
     const ethData = {primaryAddress,primaryAddressAmount,percentagePrice}
     return(
       <View style={{flex:1}}>
-        {this.state.isLogged?<AssetsHeader ethPrice={this.state.ethPrice} ethData={ethData} logoutHandler={this.logoutHandler}/>:<AssetsHeaderLoginFalse loginEvent={this.loginEvent} navigation={this.props.navigation} />}
-        {this.state.isLogged&&<AssetsBody flatListData={this.state.flatListData}/>}
+        {this.state.isLogged?<AssetsHeader flatListData={this.state.flatListData} addNewAddress={this.addNewAddress} navigation={this.props.navigation} ethPrice={this.state.ethPrice} ethData={ethData} logoutHandler={this.logoutHandler}/>:<AssetsHeaderLoginFalse loginEvent={this.loginEvent} navigation={this.props.navigation} />}
+        {this.state.isLogged&&this.state.flatListData.length>0&&<AssetsBody deleteAddress={this.deleteAddress} flatListData={this.state.flatListData} navigation={this.props.navigation}/>}
       </View>
     )
   }

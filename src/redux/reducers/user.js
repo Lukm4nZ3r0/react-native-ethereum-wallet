@@ -7,6 +7,7 @@ const initialState = {
     primaryAddressAmount:'',
     primaryAddressPrice:0,
     percentagePrice:0,
+    historyTransaction:[],
     otherAddress:[],
     name:''
 }
@@ -37,7 +38,28 @@ export default user = (state = initialState, action)=>{
         case 'ADD_ADDRESS':
             return{
                 ...state,
-                otherAddress:[...state.otherAddress, ...action.address]
+                otherAddress:[...state.otherAddress, {ethAddress:action.address}]
+            }
+        case 'DELETE_ADDRESS':
+            return{
+                ...state,
+                otherAddress:[]
+            }
+        case 'DELETE_ADDRESS_WHERE':
+            let newOtherAddress = state.otherAddress
+            for(let i = 0 ; i<state.otherAddress.length ; i++){
+                if(state.otherAddress[i].ethAddress === action.address){
+                    newOtherAddress.splice(i,1)
+                }
+            }
+            return{
+                ...state,
+                otherAddress:newOtherAddress
+            }
+        case 'UPDATE_HISTORY_TRANSACTION':
+            return{
+                ...state,
+                historyTransaction:action.data
             }
         case 'LOGOUT':
             return{

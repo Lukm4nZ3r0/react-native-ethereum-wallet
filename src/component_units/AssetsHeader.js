@@ -3,7 +3,7 @@ import {View,Text,TextInput,ImageBackground, FlatList,TouchableOpacity, Image} f
 import LinearGradient from 'react-native-linear-gradient'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
-const AssetsHeader = ({logoutHandler,ethData,ethPrice}) =>{
+const AssetsHeader = ({logoutHandler,ethData,ethPrice,navigation,addNewAddress,flatListData}) =>{
     ethData.percentagePrice!==undefined?ethData.percentagePrice:0
     let percentage
     let percentagePrice
@@ -36,6 +36,9 @@ const AssetsHeader = ({logoutHandler,ethData,ethPrice}) =>{
               </TouchableOpacity>
           </View>
           <View style={{position:'absolute', flexDirection:'row', right:'5%', top:'8%'}}>
+              <TouchableOpacity style={{marginRight:20}} onPress={()=>navigation.navigate('AddNewAddress',{addNewAddress:addNewAddress, flatListData:flatListData})}>
+                <FontAwesome style={{fontSize:30, fontWeight:'bold', color:'white'}} name="plus"/>
+              </TouchableOpacity>
               <TouchableOpacity style={{marginRight:20}}>
                 <FontAwesome style={{fontSize:30, fontWeight:'bold', color:'white'}} name="undo"/>
               </TouchableOpacity>
@@ -49,15 +52,15 @@ const AssetsHeader = ({logoutHandler,ethData,ethPrice}) =>{
               <Text style={{color:'white', fontSize:13}}>{ethData.primaryAddress}</Text>
           </View>
           <View style={{width:'95%', flexDirection:'row', flex:1}}>
-              <View style={{flex:1, justifyContent:'center', alignItems:'center', borderWidth:1, borderColor:'white', margin:5, borderRadius:10, flexDirection:'row'}}>
-                <Image style={{width:50, height:50, resizeMode:'contain'}} source={{uri:'https://i1.wp.com/www.vectorico.com/wp-content/uploads/2018/09/ethereum-icon.png?resize=210%2C300'}}/>
+              <View style={{flex:1, justifyContent:'center', alignItems:'center', borderWidth:1, borderColor:'white', margin:5, borderRadius:10, flexDirection:flatListData.length>0?'row':'column'}}>
+                <Image style={{flex:1,width:50, height:50, resizeMode:'contain'}} source={{uri:'https://i1.wp.com/www.vectorico.com/wp-content/uploads/2018/09/ethereum-icon.png?resize=210%2C300'}}/>
                 <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
                   <Text style={{color:'white', fontSize:20, fontWeight:'bold'}}>Your Eth:</Text>
                   <Text numberOfLines={1} style={{color:'white', fontWeight:'bold', fontSize:15, marginTop:5}}>{ethData.primaryAddressAmount}</Text>
                 </View>
               </View>
-              <View style={{flex:1, justifyContent:'center', alignItems:'center', flexDirection:'row',borderWidth:1, borderColor:'white', margin:5, borderRadius:10}}>
-                <View style={{alignItems:'center', justifyContent:'center', margin:20}}>
+              <View style={{flex:1, justifyContent:'center', alignItems:'center',borderWidth:1, borderColor:'white', margin:5, borderRadius:10, flexDirection:flatListData.length>0?'row':'column'}}>
+                <View style={{flex:1,alignItems:'center', justifyContent:'center', margin:20}}>
                   <FontAwesome style={{color:'white', fontSize:30}} name={percentageArrow}/>
                   <View style={{flexDirection:'row', justifyContent:'center'}}>
                     <Text style={{color:'white'}}>{percentageOperator} </Text>

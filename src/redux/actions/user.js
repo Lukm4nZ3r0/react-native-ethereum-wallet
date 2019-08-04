@@ -29,6 +29,23 @@ export const addAddress = (address) => {
         address
     }
 }
+export const deleteAddress = () =>{
+    return{
+        type: 'DELETE_ADDRESS',
+    }
+}
+export const deleteAddressWhere = (address) =>{
+    return{
+        type: 'DELETE_ADDRESS_WHERE',
+        address
+    }
+}
+export const updateHistoryTransaction = (data) =>{
+    return{
+        type: 'UPDATE_HISTORY_TRANSACTION',
+        data
+    }
+}
 export const logout = () =>{
     return{
         type: 'LOGOUT',

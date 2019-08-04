@@ -10,6 +10,8 @@ import Market from './components/Market'
 import Account from './components/Account'
 //ComponentChild
 import Login from './component_units/Login'
+import QRCodeScreen from './component_units/QRCodeScreen'
+import AddNewAddress from './component_units/AddNewAddress'
 
 // Assets, History, Market Price, Account
 
@@ -63,6 +65,8 @@ const Index = createStackNavigator({
       header:null,
     })
   },
+  QRCodeScreen,
+  AddNewAddress,
 },{
   initialRouteName: 'Assets'
 })
