@@ -39,9 +39,6 @@ const AssetsHeader = ({logoutHandler,ethData,ethPrice,navigation,addNewAddress,f
               <TouchableOpacity style={{marginRight:20}} onPress={()=>navigation.navigate('AddNewAddress',{addNewAddress:addNewAddress, flatListData:flatListData})}>
                 <FontAwesome style={{fontSize:30, fontWeight:'bold', color:'white'}} name="plus"/>
               </TouchableOpacity>
-              <TouchableOpacity style={{marginRight:20}}>
-                <FontAwesome style={{fontSize:30, fontWeight:'bold', color:'white'}} name="undo"/>
-              </TouchableOpacity>
               <TouchableOpacity style={{marginRight:5}}>
                 <FontAwesome style={{fontSize:30, fontWeight:'bold', color:'white'}} name="qrcode"/>
               </TouchableOpacity>

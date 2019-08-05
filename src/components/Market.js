@@ -2,23 +2,49 @@ import React, {Component} from 'react'
 import {View,Text,FlatList,TouchableOpacity,Image} from 'react-native'
 import StackedAreaExample from '../component_units/chart'
 import {data} from '../dummy/DummyData'
+//redux
+import { connect } from 'react-redux';
+import { logout,updatePrice,updatePercentagePrice } from '../redux/actions/user';
+import {URL} from '../../URL'
+import axios from 'axios'
 
 class Market extends Component{
     constructor(props){
         super(props)
         this.state = {
-            marketList : [
-                {id:0, market:'Indodax', image:'https://upload.wikimedia.org/wikipedia/id/b/b0/Logo_Indodax.png', priceLates:'2500000', priceNow:'3000000'},
-                {id:1, market:'Indodax', image:'https://upload.wikimedia.org/wikipedia/id/b/b0/Logo_Indodax.png', priceLates:'2500000', priceNow:'3000000'},
-                {id:2, market:'Indodax', image:'https://upload.wikimedia.org/wikipedia/id/b/b0/Logo_Indodax.png', priceLates:'2500000', priceNow:'3000000'},
-            ]
+            marketList : [],
+            chartData:[]
         }
+    }
+    componentDidMount(){
+        let chartDataCopy = this.state.chartData
+        for(let i = 0 ; i<1000 ; i++){
+            chartDataCopy.push({chart:0})
+        }
+        setInterval(()=>{
+            axios.get(`${URL}module=stats&action=ethprice`).then((response)=>{
+                const {ethusd} = response.data.result
+                for(let i = 0 ; i<this.state.chartData.length ; i++){
+                    if(this.state.chartData.length-1!==i){
+                        chartDataCopy[i].chart = (Number(chartDataCopy[i+1].chart))
+                    }
+                    else{
+                        chartDataCopy[i].chart=(Number(ethusd))
+                    }
+                }
+                // chartDataCopy[0].chart = chartDataCopy[1].chart
+                // chartDataCopy[1].chart = chartDataCopy[2].chart
+                // chartDataCopy[2].chart = chartDataCopy[3].chart
+                // chartDataCopy[3].chart = ethusd
+                this.setState({  chartData:chartDataCopy })
+            })
+        },10000)
     }
     render(){
         return(
             <View style={{flex:1}}>
-                <StackedAreaExample data={data}/>
-                <View style={{flex:1}}>
+                <StackedAreaExample data={this.state.chartData}/>
+                {this.state.marketList.length>0 && <View style={{flex:1}}>
                     <FlatList 
                         data={this.state.marketList}
                         keyExtractor={(item,index) => index.toString()}
@@ -41,10 +67,14 @@ class Market extends Component{
                         </TouchableOpacity>
                         )}}
                     />
-                </View>
+                </View>}
             </View>
         )
     }
 }
 
-export default Market
+const mapStateToProps = state => ({
+    user: state.user,
+  });
+  
+  export default connect(mapStateToProps)(Market)

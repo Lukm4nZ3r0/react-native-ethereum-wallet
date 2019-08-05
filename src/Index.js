@@ -20,7 +20,7 @@ const bottomTabNavigator = createMaterialBottomTabNavigator({
   Assets:{screen:Assets},
   History:{screen:History},
   Market:{screen:Market},
-  Account:{screen:Account},
+  // Account:{screen:Account},
 },{
   defaultNavigationOptions: ({ navigation }) =>{ 
     const { routeName } = navigation.state;

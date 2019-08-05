@@ -61,6 +61,11 @@ export default user = (state = initialState, action)=>{
                 ...state,
                 historyTransaction:action.data
             }
+        case 'DELETE_ALL_HISTORY':
+            return{
+                ...state,
+                historyTransaction:[]
+            }
         case 'LOGOUT':
             return{
                 ...state,

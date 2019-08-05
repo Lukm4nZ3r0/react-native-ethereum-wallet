@@ -1,30 +1,39 @@
 import React from 'react'
-import { StackedAreaChart } from 'react-native-svg-charts'
+import {Dimensions} from 'react-native'
+import { StackedBarChart , Grid } from 'react-native-svg-charts'
 import * as shape from 'd3-shape'
 
-class StackedAreaExample extends React.PureComponent {
-    render() {
-        const data = this.props.data
+const {width,height} = Dimensions.get('window')
 
-        const colors = ['#8800cc', '#aa00ff', '#cc66ff', '#eeccff']
-        const keys = ['apples', 'bananas', 'cherries', 'dates']
+class StackedAreaExample extends React.Component {
+    constructor(props){
+        super(props)
+        this.state = {
+            dataChart:props.data
+        }
+    }
+    render() {
+        const data = this.state.dataChart
+
+        const colors = ['#8800cc']
+        const keys = ['chart']
         const svgs = [
-            { onPress: () => console.log('apples') },
-            { onPress: () => console.log('bananas') },
-            { onPress: () => console.log('cherries') },
-            { onPress: () => console.log('dates') },
+            { onPress: () => console.warn('chart') }
         ]
 
         return (
-            <StackedAreaChart
-                style={{ height: 200, paddingVertical: 16 }}
+            <StackedBarChart 
+                style={{ height: height/1.2, paddingVertical: 50 }}
                 data={data}
                 keys={keys}
                 colors={colors}
                 curve={shape.curveNatural}
-                showGrid={false}
+                showGrid={true}
                 svgs={svgs}
-            />
+                valueAccessor={({ item, key }) => item[key]}
+            >
+                <Grid />
+            </StackedBarChart >
         )
     }
 }

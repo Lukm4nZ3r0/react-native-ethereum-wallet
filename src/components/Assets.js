@@ -4,7 +4,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 //redux
 import { connect } from 'react-redux';
-import { logout,updatePrice,updatePercentagePrice,updateHistoryTransaction,deleteAddress,deleteAddressWhere } from '../redux/actions/user';
+import { logout,updatePrice,updatePercentagePrice,updateHistoryTransaction,deleteAddress,deleteAddressWhere,deleteAllHistory } from '../redux/actions/user';
 import {URL} from '../../URL'
 import axios from 'axios'
 //ChildComponent
@@ -122,6 +122,7 @@ class Assets extends Component{
 
   logoutHandler = () =>{
     this.props.dispatch(logout())
+    this.props.dispatch(deleteAllHistory())
     clearInterval(this.setPrice)
     this.setState({isLogged:false})
   }

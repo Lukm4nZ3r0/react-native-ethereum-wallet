@@ -46,6 +46,11 @@ export const updateHistoryTransaction = (data) =>{
         data
     }
 }
+export const deleteAllHistory = () =>{
+    return{
+        type: 'DELETE_ALL_HISTORY'
+    }
+}
 export const logout = () =>{
     return{
         type: 'LOGOUT',
