@@ -63,6 +63,9 @@ then run npm install on each folders root
 npm install
 ```
 
+3. in URL.js, edit ``` Config.YOUR_ETHERSCAN_API_KEY ``` with your Etherscan API
+<img src='https://github.com/Lukm4nZ3r0/react-native-ethereum-wallet/blob/master/URL-d2deb6cae1.png' width=700 />
+
 <!-- USAGE EXAMPLES -->
 ## Usage
 
